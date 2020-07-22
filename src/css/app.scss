@@ -1,0 +1,93 @@
+body {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  line-height: 1.2;
+  color: darkgray;
+  background-color: grey;
+  padding: 3em 0 0 0;
+  margin: 0;
+}
+
+header,
+footer,
+aside,
+main {
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+header {
+  min-height: 120px;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  color: gray;
+  background-color: darkgray;
+  ul {
+    list-style: none;
+    li {
+      display: inline;
+    }
+  }
+}
+
+footer,
+.content {
+  display: flex;
+  color: grey;
+  background-color: darkgray;
+  margin-bottom: 2rem;
+  padding: 1rem 0
+}
+
+.content {
+  main {
+    min-width: 66.666%;
+    max-width: 800px;
+    min-height: 400px;
+  }
+
+  hr {
+    border: 1px solid gray;
+  }
+}
+
+header {
+  h1 {
+    display: inline-block;
+    padding: .6em 1.8em;
+    line-height: 1;
+    border: 3px solid darkgray;
+  }
+}
+
+a,
+button {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  border: 1px solid gray;
+  background-color: inherit;
+}
+
+@media (max-width: 998px) {
+  .content {
+    display: block;
+    main,
+    aside {
+      min-width: initial;
+      max-width: initial;
+    }
+
+    main {
+      border-bottom: 3px solid gray;
+      margin-bottom: 3em;
+    }
+  }
+}

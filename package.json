@@ -1,0 +1,51 @@
+{
+  "name": "parcel-pre-route-md",
+  "version": "1.0.0",
+  "description": "Simple prerender/routing spa parcel environment with markdown-it for content",
+  "main": "index.js",
+  "scripts": {
+    "serve": "NODE_ENV=development parcel ./src/index.html --no-cache",
+    "dev": "NODE_ENV=development node index.js",
+    "build": "rm -rf ./dist/ && NODE_ENV=production parcel build ./src/index.html -d ./dist/ --no-cache --detailed-report 10",
+    "report": "NODE_ENV=production parcel build ./src/index.html --detailed-report 10",
+    "format": "prettier --write \"./{src,data}/**/*.{js,css,html,md}\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.2",
+    "express": "^4.17.1",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-html-partials": "0.0.6",
+    "parcel-plugin-markdown-it": "^0.1.3",
+    "parcel-plugin-prerender": "^1.4.1",
+    "parcel-plugin-bundle-visualiser": "^1.2.0",
+    "parcel-plugin-compress": "^2.0.2",
+    "prettier": "^2.0.5",
+    "sass": "^1.26.10"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "data": "^0.6.1"
+  },
+  "prerender": {
+    "routes": [
+      "/",
+      "/contact",
+      "/about"
+    ],
+    "rendererConfig": {
+      "renderAfterDocumentEvent": "prerender-trigger"
+    }
+  },
+  "author": "Simon Gattner <npm@0x38.de>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/exiguus/parcel-pre-route-md.git"
+  },
+  "engines": {
+    "node": ">= 10.0.0",
+    "npm": ">= 6.0.1"
+  }
+}
