@@ -25,7 +25,7 @@ const setup = {
   },
   main: {
     shadow: document.getElementById('main').attachShadow({mode: 'open'}),
-    content: main,
+    content: index,
   },
   footer: {
     shadow: document.getElementById('footer').attachShadow({mode: 'open'}),
@@ -33,35 +33,32 @@ const setup = {
   },
 };
 
+const appendDOM = (key) => {
+  // if isEqualNode
+  const wrapper = document.createElement('div');
+  wrapper.insertAdjacentHTML('afterbegin', setup[key].content.html);
+  return setup[key].shadow.appendChild(wrapper);
+}
+
+const updateDOM = (status) => {
+  const items = setup[status] || setup;
+  Object.keys(items).forEach((key) => {
+    appendDOM(key);
+    if (process.env.NODE_ENV === 'development') console.log(`render:${key}`);
+  });
+};
+
 const render = (status) => {
-  const currentPage = () => {
-    const hash = document.location.hash.substring(3);
+  // routing
+  const main = () => {
     const pathname = document.location.pathname.substring(1);
     const path = (pathname.charAt(pathname.length-1) === '/')
       ? pathname.slice(0, -1) : pathname;
-    const page = pages[hash] || pages[path] || pages['index'];
+    const page = pages[path] || pages['index'];
     return page;
   };
-  setup.main.content = currentPage();
-
-  const meta = setup.main.content.meta || {};
-  const defaultTitle = 'Default Title';
-  let title = document.querySelector('title').textContent;
-  if (title !== meta.title && title !== defaultTitle ) title = meta.title || defaultTitle;
-
-  if (status) {
-    if (setup[status].shadow.innerHTML !== setup[status].content.html) {
-      setup[status].shadow.innerHTML = setup[status].content.html;
-    }
-    if (process.env.NODE_ENV === 'development') console.log(`render:${status}`);
-  } else {
-    Object.keys(setup).forEach((key) => {
-      if (setup[key].shadow.innerHTML !== setup[key].content.html) {
-        setup[key].shadow.innerHTML = setup[key].content.html;
-      }
-      if (process.env.NODE_ENV === 'development') console.log(`render:${key}`);
-    });
-  }
+  setup.main.content = main();
+  updateDOM(status);
 };
 render();
 
