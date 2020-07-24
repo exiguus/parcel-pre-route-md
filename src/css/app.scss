@@ -1,66 +1,89 @@
 body {
   font-family: 'Courier New', Courier, monospace;
-  font-size: 16px;
+  font-size: 1.2rem;
   line-height: 1.2;
-  color: darkgray;
-  background-color: grey;
-  padding: 3em 0 0 0;
+  color: black;
+  background-color: lightgrey;
+  padding: 2rem 0 0 0;
   margin: 0;
 }
 
-header,
-footer,
-aside,
-main {
+#header,
+#footer,
+#aside,
+#main {
   padding: 1rem;
   margin-bottom: 2rem;
 }
 
-header {
-  min-height: 120px;
-}
-
-nav {
+#nav {
   position: fixed;
   top: 0;
   width: 100%;
-  color: gray;
-  background-color: darkgray;
+  border-bottom: 2px lightgrey;
+}
+
+#nav,
+#footer {
+  color:lightgrey;
+  background-color: midnightblue;
+
   ul {
+    margin-left: -1.6rem;
     list-style: none;
+
     li {
-      display: inline;
+      display: inline-block;
+      padding: 1rem .2rem;
+
+      +li {
+        margin-left: 1rem;
+      }
+
+      a {
+        display: block;
+
+        &.current {
+          font-weight: bold;
+        }
+      }
     }
   }
 }
 
-footer,
+#header {
+  margin-top: 6rem;
+
+  h1 {
+    display: inline-block;
+    padding: .6rem 1.8rem;
+    line-height: 1;
+    border: 3px solid black;
+  }
+}
+
+#footer,
 .content {
   display: flex;
-  color: grey;
-  background-color: darkgray;
-  margin-bottom: 2rem;
-  padding: 1rem 0
+  margin-bottom: 1rem;
+  padding: 1rem 0;
 }
 
 .content {
-  main {
-    min-width: 66.666%;
-    max-width: 800px;
-    min-height: 400px;
+  color:lightgrey;
+  background-color: black;
+
+  main,
+  #main {
+    width: 66.666%;
+  }
+
+  #aside {
+    width: 33.333%;
   }
 
   hr {
-    border: 1px solid gray;
-  }
-}
-
-header {
-  h1 {
-    display: inline-block;
-    padding: .6em 1.8em;
-    line-height: 1;
-    border: 3px solid darkgray;
+    border: 1px lightgrey;
   }
 }
 
@@ -72,22 +95,27 @@ button {
 button {
   font-family: inherit;
   font-size: inherit;
-  border: 1px solid gray;
+  border: 1px lightgrey;
   background-color: inherit;
 }
 
 @media (max-width: 998px) {
+  body {
+    font-size: 120%;
+  }
+
   .content {
     display: block;
-    main,
-    aside {
+
+    #main,
+    #aside {
       min-width: initial;
       max-width: initial;
     }
 
-    main {
-      border-bottom: 3px solid gray;
-      margin-bottom: 3em;
+    #main {
+      border-bottom: 3px lightgrey;
+      margin-bottom: 3rem;
     }
   }
 }

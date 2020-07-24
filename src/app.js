@@ -19,6 +19,10 @@ const pages = {
 };
 
 const setup = {
+  nav: {
+    shadow: null,
+    content: {},
+  },
   header: {
     shadow: null,
     content: header,
@@ -34,15 +38,12 @@ const setup = {
 };
 
 const appendDOM = (key) => {
-  let wrapper;
   if (window['__PRERENDER_INJECTED']) {
-    wrapper = document.createElement('div');
-    wrapper.insertAdjacentHTML('afterbegin', setup[key].content.html);
-    document.getElementById(key).append(wrapper);
+    document.getElementById(key).innerHTML = setup[key].content.html;
   } else {
-    wrapper = document.createElement(key);
-    wrapper.insertAdjacentHTML('afterbegin', setup[key].content.html);
+    const wrapper = document.createElement(key);
     wrapper.id = key;
+    wrapper.insertAdjacentHTML('afterbegin', setup[key].content.html + '');
     const linkElem = document.createElement('link');
     linkElem.setAttribute('rel', 'stylesheet');
     linkElem.setAttribute('href', document.querySelector('link[rel="stylesheet"]').href);
@@ -55,6 +56,7 @@ const createShadow = (key, item) => {
     if (!window['__PRERENDER_INJECTED'] && !item.shadow) {
       const wrapper = document.getElementById(key);
       setup[key].shadow = wrapper.attachShadow({mode: 'open'})
+      wrapper.id = '';
     }
 }
 
@@ -69,14 +71,25 @@ const updateDOM = (status) => {
 
 const render = (status) => {
   // routing
+  const pathname = document.location.pathname.substring(1);
+  const path = (pathname.charAt(pathname.length - 1) === '/') ?
+    pathname.slice(0, -1) : pathname;
+
   const main = () => {
-    const pathname = document.location.pathname.substring(1);
-    const path = (pathname.charAt(pathname.length-1) === '/')
-      ? pathname.slice(0, -1) : pathname;
     const page = pages[path] || pages['index'];
     return page;
   };
   setup.main.content = main();
+
+  const navItems = () => {
+    let items = '';
+    Object.keys(pages).forEach((key) => {
+      items +=`<li><a href="/${ pages[key].meta.id }"${(pages[key].meta.id === path) ? 'class="current"' : ""}>${ pages[key].meta.title }</a></li>`;
+    });
+    return items;
+  };
+  setup.nav.content = { html: `<ul>${ navItems() }</ul>` };
+
   updateDOM(status);
 };
 render();

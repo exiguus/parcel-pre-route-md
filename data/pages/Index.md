@@ -1,6 +1,6 @@
 ---
 id: index
-title: Landingpage
+title: Home
 ---
 
 # Main Headline

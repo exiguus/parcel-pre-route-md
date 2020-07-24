@@ -1,3 +1,8 @@
+---
+id: about
+title: About
+---
+
 # About Page
 
 ## Second Headline
