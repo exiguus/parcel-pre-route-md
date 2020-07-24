@@ -35,7 +35,8 @@
       "/about"
     ],
     "rendererConfig": {
-      "renderAfterDocumentEvent": "prerender-trigger"
+      "renderAfterDocumentEvent": "prerender-trigger",
+      "inject": "{ 'ssr': 'true' }"
     }
   },
   "author": "Simon Gattner <npm@0x38.de>",

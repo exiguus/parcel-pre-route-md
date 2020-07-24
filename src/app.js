@@ -20,29 +20,48 @@ const pages = {
 
 const setup = {
   header: {
-    shadow: document.getElementById('header').attachShadow({mode: 'open'}),
+    shadow: null,
     content: header,
   },
   main: {
-    shadow: document.getElementById('main').attachShadow({mode: 'open'}),
+    shadow: null,
     content: index,
   },
   footer: {
-    shadow: document.getElementById('footer').attachShadow({mode: 'open'}),
+    shadow: null,
     content: footer,
   },
 };
 
 const appendDOM = (key) => {
-  // if isEqualNode
-  const wrapper = document.createElement('div');
-  wrapper.insertAdjacentHTML('afterbegin', setup[key].content.html);
-  return setup[key].shadow.appendChild(wrapper);
+  let wrapper;
+  if (window['__PRERENDER_INJECTED']) {
+    wrapper = document.createElement('div');
+    wrapper.insertAdjacentHTML('afterbegin', setup[key].content.html);
+    document.getElementById(key).append(wrapper);
+  } else {
+    wrapper = document.createElement(key);
+    wrapper.insertAdjacentHTML('afterbegin', setup[key].content.html);
+    wrapper.id = key;
+    const linkElem = document.createElement('link');
+    linkElem.setAttribute('rel', 'stylesheet');
+    linkElem.setAttribute('href', document.querySelector('link[rel="stylesheet"]').href);
+    setup[key].shadow.appendChild(linkElem);
+    setup[key].shadow.appendChild(wrapper);
+  }
+}
+
+const createShadow = (key, item) => {
+    if (!window['__PRERENDER_INJECTED'] && !item.shadow) {
+      const wrapper = document.getElementById(key);
+      setup[key].shadow = wrapper.attachShadow({mode: 'open'})
+    }
 }
 
 const updateDOM = (status) => {
   const items = setup[status] || setup;
   Object.keys(items).forEach((key) => {
+    createShadow(key, items[key]);
     appendDOM(key);
     if (process.env.NODE_ENV === 'development') console.log(`render:${key}`);
   });
@@ -65,7 +84,7 @@ render();
 window.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     document.dispatchEvent(new Event('prerender-trigger'));
-  }, 200);
+  }, 600);
 });
 window.addEventListener('hashchange', () => {
   render('main');
