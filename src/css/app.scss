@@ -1,9 +1,24 @@
+:root {
+  --primary-color: lightgrey;
+  --secondary-color: midnightblue;
+}
+
+:root[color-mode="light"] {
+  --primary-color: midnightblue;
+  --secondary-color: lightgrey;
+}
+
+:root[color-mode="dark"] {
+  --primary-color: lightgrey;
+  --secondary-color: midnightblue;
+}
+
 body {
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.2rem;
   line-height: 1.2;
-  color: black;
-  background-color: lightgrey;
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
   padding: 2rem 0 0 0;
   margin: 0;
 }
@@ -20,13 +35,13 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  border-bottom: 2px lightgrey;
+  border-bottom: 2px var(--primary-color);
 }
 
 #nav,
 #footer {
-  color:lightgrey;
-  background-color: midnightblue;
+  color:var(--primary-color);
+  background-color: var(--secondary-color);
 
   ul {
     margin-left: -1.6rem;
@@ -58,7 +73,7 @@ body {
     display: inline-block;
     padding: .6rem 1.8rem;
     line-height: 1;
-    border: 3px solid black;
+    border: 3px solid var(--secondary-color);
   }
 }
 
@@ -70,8 +85,8 @@ body {
 }
 
 .content {
-  color:lightgrey;
-  background-color: black;
+  color:var(--primary-color);
+  background-color: var(--secondary-color);
 
   main,
   #main {
@@ -83,7 +98,7 @@ body {
   }
 
   hr {
-    border: 1px lightgrey;
+    border: 1px var(--primary-color);
   }
 }
 
@@ -95,7 +110,8 @@ button {
 button {
   font-family: inherit;
   font-size: inherit;
-  border: 1px lightgrey;
+  border: 1px solid var(--primary-color);
+  border-radius: 2px;
   background-color: inherit;
 }
 
@@ -107,14 +123,8 @@ button {
   .content {
     display: block;
 
-    #main,
-    #aside {
-      min-width: initial;
-      max-width: initial;
-    }
-
     #main {
-      border-bottom: 3px lightgrey;
+      border-bottom: 3px var(--primary-color);
       margin-bottom: 3rem;
     }
   }

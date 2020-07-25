@@ -4,6 +4,7 @@
 import 'babel-polyfill';
 
 import Text from './js/Text.class';
+import ColorMode from './js/ColorMode.class';
 
 import header from '../data/partials/Header.md';
 import footer from '../data/partials/Footer.md';
@@ -46,19 +47,22 @@ const appendDOM = (key) => {
     wrapper.insertAdjacentHTML('afterbegin', setup[key].content.html + '');
     const linkElem = document.createElement('link');
     linkElem.setAttribute('rel', 'stylesheet');
-    linkElem.setAttribute('href', document.querySelector('link[rel="stylesheet"]').href);
+    linkElem.setAttribute(
+      'href',
+      document.querySelector('link[rel="stylesheet"]').href,
+    );
     setup[key].shadow.appendChild(linkElem);
     setup[key].shadow.appendChild(wrapper);
   }
-}
+};
 
 const createShadow = (key, item) => {
-    if (!window['__PRERENDER_INJECTED'] && !item.shadow) {
-      const wrapper = document.getElementById(key);
-      setup[key].shadow = wrapper.attachShadow({mode: 'open'})
-      wrapper.id = '';
-    }
-}
+  if (!window['__PRERENDER_INJECTED'] && !item.shadow) {
+    const wrapper = document.getElementById(key);
+    setup[key].shadow = wrapper.attachShadow({mode: 'open'});
+    wrapper.id = '';
+  }
+};
 
 const updateDOM = (status) => {
   const items = setup[status] || setup;
@@ -72,8 +76,10 @@ const updateDOM = (status) => {
 const render = (status) => {
   // routing
   const pathname = document.location.pathname.substring(1);
-  const path = (pathname.charAt(pathname.length - 1) === '/') ?
-    pathname.slice(0, -1) : pathname;
+  const path =
+    pathname.charAt(pathname.length - 1) === '/'
+      ? pathname.slice(0, -1)
+      : pathname;
 
   const main = () => {
     const page = pages[path] || pages['index'];
@@ -84,31 +90,63 @@ const render = (status) => {
   const navItems = () => {
     let items = '';
     Object.keys(pages).forEach((key) => {
-      items +=`<li><a href="/${ pages[key].meta.id }"${(pages[key].meta.id === path) ? 'class="current"' : ""}>${ pages[key].meta.title }</a></li>`;
+      items += `<li><a href="/${pages[key].meta.id}"${
+        pages[key].meta.id === path ? 'class="current"' : ''
+      }>${pages[key].meta.title}</a></li>`;
     });
     return items;
   };
-  setup.nav.content = { html: `<ul>${ navItems() }</ul>` };
+  setup.nav.content = {html: `<ul>${navItems()}</ul>`};
 
   updateDOM(status);
+
+  if (window['__PRERENDER_INJECTED']) {
+    document.querySelector('title').innerText =
+      setup.main.content.meta.title || 'Title';
+  }
 };
 render();
 
+const init = () => {
+  // Text DOM
+  const text = new Text();
+
+  const buttonText = document.querySelectorAll('#aside button');
+
+  buttonText.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      text.toggle();
+    });
+  });
+
+  // Color Mode shadow DOM
+  const nav = setup.nav.shadow || document.getElementById('nav');
+  const colorModeSwitch = document.createElement('div');
+  colorModeSwitch.style = `
+    position: fixed;
+    right: 3rem;
+  `;
+  const colorModeButton = document.createElement('button');
+  colorModeButton.textContent = 'switch color mode';
+  colorModeButton.style = `
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+    border-color: var(--primary-color);
+  `;
+  colorModeSwitch.appendChild(colorModeButton);
+  nav.appendChild(colorModeSwitch);
+  const colorMode = new ColorMode(nav.querySelectorAll('div button'));
+
+  colorMode.init();
+};
+
 window.addEventListener('DOMContentLoaded', () => {
+  init();
   setTimeout(() => {
     document.dispatchEvent(new Event('prerender-trigger'));
   }, 600);
 });
 window.addEventListener('hashchange', () => {
   render('main');
-});
-
-// misc
-const text = new Text();
-
-const button = document.querySelector('button');
-
-button.addEventListener('click', (event) => {
-  event.preventDefault();
-  text.toggle();
 });
