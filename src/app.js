@@ -121,22 +121,20 @@ const init = () => {
   });
 
   // Color Mode shadow DOM
-  const nav = setup.nav.shadow || document.getElementById('nav');
-  const colorModeSwitch = document.createElement('div');
-  colorModeSwitch.style = `
-    position: fixed;
-    right: 3rem;
-  `;
+  const nav = setup.nav.shadow || document.getElementById('nav').parentNode;
+  const container = nav.querySelector('#nav ul')
+  const colorModeSwitch = document.createElement('li');
   const colorModeButton = document.createElement('button');
   colorModeButton.textContent = 'switch color mode';
   colorModeButton.style = `
     color: var(--primary-color);
     background-color: var(--secondary-color);
     border-color: var(--primary-color);
+    cursor: pointer;
   `;
   colorModeSwitch.appendChild(colorModeButton);
-  nav.appendChild(colorModeSwitch);
-  const colorMode = new ColorMode(nav.querySelectorAll('div button'));
+  container.appendChild(colorModeSwitch);
+  const colorMode = new ColorMode(container.querySelectorAll('#nav ul li button'));
 
   colorMode.init();
 };
