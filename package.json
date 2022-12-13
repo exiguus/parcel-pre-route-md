@@ -14,7 +14,7 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-html-partials": "0.0.6",
     "parcel-plugin-markdown-it": "^0.1.3",
